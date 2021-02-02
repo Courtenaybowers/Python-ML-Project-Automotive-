@@ -1,0 +1,84 @@
+#Show the summary/basic statistics of the dataset
+df.describe()
+  #if dataset contains categorical data (use the "value_counts()"
+drive_wheels_counts=df["drive-wheels"].value_counts()
+
+
+#Show a box plot of the "drive-wheels" and "price" of the vehicle
+sns.boxplot(x="drive-wheels", y="price", data=df)
+  
+  
+#Show a scatter plot of the "engine-size" and "price" of the vehicle
+y=df["engine-size"]
+x=df["price"]
+plt.scatter(x,y)
+
+plt.title("Scatterplot of Engine Size vs. Price)
+plt.xlabel("Engine Size")
+plt.xlabel("Price")
+
+
+#------------------------Grouping Data-------------------------
+  #is the price of a vehicle correlated to "body-styles" or "drive-wheels"?
+import pandas as pd
+df_test = df[['drive-wheels', 'body-style', 'price']]
+df_grp = df_test.groupby(['drive-wheels','body-style'], as_index=False).mean()
+df_grp
+
+  #make the df_grp data into a pivot table showing 'drive-wheels' and 'body-style'
+df_pivot = df_grp.pivot(index= 'drive-wheels', columns= 'body-style')
+
+  #convert the pivot table into a heatmap
+plt.pcolor(df_pivot, cmap='RdBu')
+plt.colorbar()
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
