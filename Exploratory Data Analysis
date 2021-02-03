@@ -34,51 +34,209 @@ plt.colorbar()
 plt.show()
 
 
+#------------------------Analysis of Variance (ANOVA)-------------------------(Used to find the correlation between different groups of a categorical variable)
+  #Reslts will be returned as:
+    #F-test score: variation between sample group means divided by variation within sample group
+    #p-value: confidence degree
+
+#Is there a difference between the make and price ("Honda, "Subaru")..............(1st line extracts the "make" and "price" data, 2nd line groups the data by make)
+df_anova=df[["make,"price"]]
+grouped_anova=df_anova.groupby(["make"])
+
+anova_results_1=stats.f_oneway(grouped_anova.get_group("honda)["price"],grouped_anova.get_group("subaru")["price"])
+
+  #example output ('ANOVA results: F=0.19744031275, p=F_onewayResults(statistic=0.1974430127), pvalue=0.660947824)
+    #the prices between Hondas and Subarus are not significantly different as the F-test score < 1 and p-value > .05
+    #strong correlation = if the results of the ANOVA test gives a large F-test value and a small p-value
+
+#Rerun the ANOVA with "honda" and "jaguar"
+df_anova=df[["make","price"]]
+grouped_anova_df=df.anova.groupby(["make"])
+
+anova_results_1=stats.f_oneway(grouped_anova.get_group("honda")["price"],grouped_anova.get_group("jaguar")["price"])
+
+
+#------------------------Correlation-------------------------(Measures to what extent different variables are interdependent (Regression))
+  #Evaluate the correlation between two features ("engine-size","price")......(Determine if engine-size has an impact on price)...(use seaborn.regplot for scatter plot)
+sns.regplot(x="engine-size", y="price", data=df)
+plt.ylim(0,)
+
+  #Evaute the correlation between two features ("highway-mpg", "price")
+sns.regplot(x="highway-mpg", y="price", data=df)
+plt.ylim(0,)
+
+    #Measure of strength of the correlation between two features
+      #CORRELATION COEFFICIENT
+        #Range is: (-1 to 1)
+      #P-VALUE
+        #<.001 = STRONG certainty in the result
+        #<.05 = MODERATE certainty in the result
+        #<.1 = WEAK certainty in the result
+        #>/1 = NO certainty in the result
+
+  #Determine is there is a correlation between "horsepower" and "price"
+pearson_coef, p_value = stats.pearsonr(df['horsepower'], df['price'])
 
 
 
+--------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------Exploratory Data Analysis (after data has been cleaned)---------------------------------------------
+  #SETUP (import libraries and load/store data in df)
+import pandas as pd
+import numpy as np
+
+path='https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-DA0101EN-SkillsNetwork/labs/Data%20files/automobileEDA.csv'
+df = pd.read_csv(path)
+df.head()
+
+%%capture
+! pip install seaborn
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+%matplotlib inline
+
+  #Check the data types and calculate the correlation of the features................(can calculate the correlation between variables of type: int64 or float64)
+print(df.dtypes)
+  #Return the data type of "peak-rpm" singularly
+print(df["peak-rpm"].dtypes)
+
+df.corr()
+
+  #Is there a correlation between ('bore', 'stroke', 'compression-ratio', 'horsepower')
+df.[['bore', 'compression-ratio', 'horsepower']].corr()
 
 
+  #What is the relationship between "engine-size" and "price", and what is the correlation between them?
+sns.regplot(x="engine-size", y="price", data=df)
+plt.ylim(0,)
+
+df[["engine-size","price"]].corr()
+
+  #Is "highway-mpg" a predictor of "price"
+sns.regplot(x="highway-mpg", y"price", data=df)
+
+dff['highway-mpg','price']].corr()
+
+  #Is "peak-rpm" a predictor of "price"?
+sns.regplot(x="peak-rpm", y="price", data=df)
+
+dff[["peak-rpm","price"]].corr()
+
+  #Categorical variables (dtypes: "object" or "int64")...Is body-style, engine-location, or drive-wheels an indicator of "price"
+sns.boxplot(x="body-style", y="price", data=df)
+
+sns.boxplot(x="engine-location", y="price", data=df)
+
+sns.boxplot(x="drive-wheels", y="price", data=df)
 
 
+-------------------------------------Descriptive Statistical Analysis-------------------------------------
+df.describe()
+
+df.describe(include=['object'])
+
+df['drive-wheels'].value_counts()
+
+  #convert the series to a Dataframe, and save to df "drive_wheels_counts"
+df['drive-wheels'].value_counts().to_frame()
+drive_wheels_counts= df['drive-wheels'].value_counts().to_frame()
+drive_wheels_counts.rename(columns={'drive-wheels': 'value_counts'}, inplace=True)
+drive_wheels_counts
+  #rename the index to 'drive-wheels'
+drive_wheels_counts.index.name = 'drive-wheels'
+drive_wheels_counts
+
+  #convert the series to a Dataframe, and save to df "engine-location_counts"
+engine_loc_counts = df['engine-location'].value_counts().to_frame()
+engine_loc_counts.rename(columns={'engine-location': 'value-counts'}, inplace= True)
+engine_loc_counts.index.name = 'engine-location'
+engine_loc_counts.head(10)
 
 
+  #How many drive-wheels groups are there, what is the average price per drive-wheel type, and what is the average price per drive-wheel and body-style?
+df['drive-wheels'].unique()
+
+df_group_one = df[['drive-wheels', 'body-style', 'price']]
+df_group_one = df_group_one.groupby(['drive-wheels']. as_index=False).mean()
+df_group_one
+
+df_gptest = df[['drive-wheels', 'body-style', 'price']]
+grouped_test1 = df_gptest.groupby(['drive-wheels','body-style'],as_index=False).mean()
+grouped_test1
+
+  #convert the grouped_test1 df to a pivot
+grouped_pivot = grouped_test1.pivot(index='drive-wheels, columns='body-style')
+grouped_pivot
+
+    #fill the NaN data with 0
+grouped_pivot = grouped_pivot.fillna(0)
+grouped_pivot
+
+  #What is the average "price" per body-style
+df_gptest2 = df[['body-style','price']]
+grouped_test_bodystyle = df_gptest2.groupby([
 
 
+#Visualize the pivot on a heat map (use matplotlib)
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.pcolor(grouped_pivot, cmap='RdBu')
+plt.colorbar()
+plt.show()
+
+    #modify the labels of the heat map
+fig, ax = plt.subplots()
+im = ax.pcolor(grouped_pivot, cmap='RdBu')
+
+      #label names
+row_labels = grouped_pivot.columns.levels[1]
+col_labels = grouped_pivot.index
+
+      #move ticks and labels to the center
+ax.set_xticks(np.arange(grouped_pivot.shape[1]) + 0.5, minor=False)
+ax.set_yticks(np.arange(grouped_pivot.shape[0]) + 0.5, minor=False)
+
+      #insert labels
+ax.set_xticklabels(row_labels, minor=False)
+ax.set_yticklabels(col_labels, minor=False)
+
+      #rotate label if too long
+plt.xticks(rotation=90)
+
+fig.colorbar(im)
+plt.show()
+
+#-----------(Correlation: measures the extent of interdependence between variables, Causation: relationship between cause and effect between two variables)
+#Measure correlation of all features
+df.corr()
+
+from scipy import stats
+
+pearson_coef, p_value = stats.pearsonr(df['wheel-base'], df['price'])
+print("The Pearson Correlation Coefficient is", pearson_coef, " with a P-value of P = ", p_value)
+
+pearson_coef, p_value = stats.pearsonr(df['horsepower'], df['price'])
+print("The Pearson Correlation Coefficient is", pearson_coef, " with a P-value of P = ", p_value)
+
+pearson_coef, p_value = stats.pearsonr(df['length'], df['price'])
+print("The Pearson Correlation Coefficient is", pearson_coef, " with a P-value of P = ", p_value)
+
+------ANOVA-----
+grouped_test2=df_gptest[['drive-wheels', 'price']].groupby(['drive-wheels'])
+grouped_test2.head(2)
+
+df_gptest
+
+grouped_test2.get_group('4wd')['price']
+
+# ANOVA
+f_val, p_val = stats.f_oneway(grouped_test2.get_group('fwd')['price'], grouped_test2.get_group('rwd')['price'], grouped_test2.get_group('4wd')['price'])  
+ 
+print( "ANOVA results: F=", f_val, ", P =", p_val)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+f_val, p_val = stats.f_oneway(grouped_test2.get_group('fwd')['price'], grouped_test2.get_group('rwd')['price'])  
+ 
+print( "ANOVA results: F=", f_val, ", P =", p_val )
