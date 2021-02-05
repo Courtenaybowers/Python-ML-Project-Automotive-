@@ -13,3 +13,16 @@ lm.intercept_
 lm.coef_
 
 print("Price = ",'lm.intercept_','lm.coef_',"*",highway_mpg)
+
+--------------------------------------------------------Multiple Linear Regression----------------------------------------------------------
+#Does 'horsepower','curb-weight','engine-size','highway-mpg' predict the target ('price' of a car)?
+    #Define the independent variables, then train the model with the dependent variable, then obtain a prediction)
+z = df[['horsepower','curb-weight','engine-size','highway-mpg']]
+lm.fit(z, df['price'])
+Yhat=lm.predict(X)
+
+lm.intercept_
+lm.coef_
+
+#THE ESTIMATED LINEAR MODEL:
+#Price = lm.intercept + b1*horsepower + b2*curb-weight + b3*engine-size + b4*highway-mpg
