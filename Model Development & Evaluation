@@ -1,0 +1,127 @@
+#Import model and create object
+from sklearn.linear_model import LinearRegression
+lm=LinearRegression()
+
+--------------------------------------------------------Linear Regression----------------------------------------------------------
+#What is the predicted value of a car based on highway-mpg?
+x = df[['highway-mpg']]
+Y = df[['price']]
+lm.fit(X,Y)
+Yhat=lm.predict(X)
+
+lm.intercept_
+lm.coef_
+
+print("Price = ",'lm.intercept_','lm.coef_',"*",highway_mpg)
+
+--------------------------------------------------------Multiple Linear Regression----------------------------------------------------------
+#Does 'horsepower','curb-weight','engine-size','highway-mpg' predict the target ('price' of a car)?
+    #Define the independent variables, then train the model with the dependent variable, then obtain a prediction)
+z = df[['horsepower','curb-weight','engine-size','highway-mpg']]
+lm.fit(z, df['price'])
+Yhat=lm.predict(X)
+
+lm.intercept_
+lm.coef_
+
+#THE ESTIMATED LINEAR MODEL:
+#Price = lm.intercept + b1*horsepower + b2*curb-weight + b3*engine-size + b4*highway-mpg
+
+
+
+-----------------------------------------Plot the models (regression, residual, distribution)-----------------------------------------------------
+#Plot the relationship between y and X (Dependent variable/feature of "price")
+import seaborn as sns
+
+sns.reglot.(x="highway-mpg",y="price", data=df)
+plt.ylim(0,)
+
+
+#Create a residual plot
+import seaborn as sns
+sns.residplot.(df['highway-mpg'],df['price'])
+
+
+#Create a distribution plot (if want histogram = change "False", 
+import seaborn as sns
+
+ax-1 = sns.distplot(of['price'], hist=False, color-"r", label-"Actual Value")
+
+sns.distplot(Yhat, hist-False, color-"b", label-"Fitted Values", ax-axl)
+ 
+
+-----------------------------------------Polynomial Regressions-----------------------------------------------------
+#Calculation uses Polynomial of 3rd order
+f=np.polyfit(x,y,3)
+p=np.polyld(f)
+
+print(p)
+
+#Polynomial regression with more than one dimension
+from sklearn.preprocessing import PolynomialFeatures
+pr=PolynomialFeatures(degree=2, include_bias=False)
+
+    #transform features into polynomial feature
+x_polly-pr,fit_transform(x(['horsepower', 'curb-weight'])
+
+#EXAMPLE: (Normalize features simultaneously)
+from sklearn.preprocessing import StandardScaler
+
+Scale=StandardScaler()
+Scale.fit(x_data[['horsepower', 'highway-mpg']])
+
+x_scale=SCALE.transform(x_data[['horsepower, 'highway-mpg']])
+
+
+#-------------------------------------Pipeline EXAMPLE (Normalization => Polynomial transform => Linear regression)----------------------------------
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import StandardScaler
+
+from sklearn.pipeline import Pipeline
+
+Input=[('scale',StandardScaler()),('polynomial',PolynomialFeatures(degree=2),('model',LinearRegression())]
+
+pipe=Pipeline(Input)
+
+Pipe.train(X['horsepower', 'curb-weight', 'engine-size', 'highway-mpg'],y)
+
+yhat=Pipe.predict(x[['horsepower', 'curb-weight', 'engine-size', 'highway-mpg']])
+
+
+#-------------------------------------------------Measures of Model Evaluation----------------------------------------------------------
+    #Important measures to determine the fit of a model:
+        #Mean Squared Error (MSE).....(
+from sklearn.metrics import mean_squared_error
+mean_squared_errors(df['price'],y_predict_simple_fit)
+
+        #R-squared (R^2) or the Coefficient of Determination....(the closer to 1 the better, "0" means the output is as good as just using the avg of the data)
+X = df[['highway-mpg']]
+Y = df[['price']]
+
+lm.fit(X, Y)
+
+
+
+#-----------------------EXAMPLE Prediction ()---------------------------
+    #Train the model, then predict the price
+lm.fit(df['highway-mpg'],df['prices']))
+lm.predict(30)
+
+    #regression equation seems reasonable. Now generate a sequence of values in a specified range.
+        #ARRANGE function (starting point, end point +1, step size between elements
+import numpy as np
+new_input_np.arange (1,101,1).reshape(-1,1)
+
+yhat=lm.predict(new_input)
+
+
+
+
+
+
+
+#-------------------------------------------------MODEL DEVELOPMENT (CODE)----------------------------------------------------------
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
