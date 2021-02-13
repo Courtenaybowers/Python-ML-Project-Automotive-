@@ -1,0 +1,20 @@
+#In-sample evaluation tells us how well our model will fit the data used to train it, but how well does the model predict new data?
+  #Solution = split the data up, use in-sample data (training data) to train the model, the rest of the data (test data/ out-of-sample data)
+
+#Split the data into random train and test subsets
+from sklearn.model_selection import train_test_split
+
+
+#Apply cross validation
+from sklearn.model_selection import cross_val_score
+
+scores=cross_val_score(lr,x_data,y_data,cv=3)
+
+np.mean(scores)
+
+
+#
+sklearn.model_selection import cross_val_predict
+yhat=cross_val_predict(lr2e,x_data,y_data,cv=3)
+
+
