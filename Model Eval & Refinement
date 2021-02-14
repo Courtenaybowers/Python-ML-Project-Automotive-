@@ -18,3 +18,12 @@ sklearn.model_selection import cross_val_predict
 yhat=cross_val_predict(lr2e,x_data,y_data,cv=3)
 
 
+#The goal of model selection is to determine the order of the polynomial to provide the best estimate of the function y(x)+noise.
+  #Underfitting: where the model is to simple to fit the data (linear model, but line is not complex enough "polynomial would be better")
+  #Overfitting: where the model is too flexible and fits the noise rather than the function
+
+
+
+
+
+
